@@ -1,46 +1,65 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using Microsoft.AspNetCore.Builder;
+﻿using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
-using Microsoft.AspNetCore.HttpsPolicy;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.ApiExplorer;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
-using Microsoft.Extensions.Logging;
-using Microsoft.Extensions.Options;
+using ModelCommunity.Api.Extensions;
+using System;
+using Todo.Api.Extensions;
+using Todo.Api.Middlewares;
 
 namespace Todo.Api
 {
     public class Startup
     {
-        public Startup(IConfiguration configuration)
-        {
-            Configuration = configuration;
-        }
-
+        public IHostingEnvironment HostingEnvironment;
         public IConfiguration Configuration { get; }
 
-        // This method gets called by the runtime. Use this method to add services to the container.
-        public void ConfigureServices(IServiceCollection services)
+        public Startup(IHostingEnvironment env, IServiceProvider serviceProvider)
         {
-            services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_1);
+            var builder = new ConfigurationBuilder()
+                .SetBasePath(env.ContentRootPath)
+                .AddJsonFile("appsettings.json", optional: true, reloadOnChange: true)
+                .AddJsonFile($"appsettings.{env.EnvironmentName}.json", optional: true)
+                .AddEnvironmentVariables();
+
+            Configuration = builder.Build();
+            HostingEnvironment = env;
         }
 
-        // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
-        public void Configure(IApplicationBuilder app, IHostingEnvironment env)
+
+        public void ConfigureServices(IServiceCollection services)
         {
-            if (env.IsDevelopment())
-            {
-                app.UseDeveloperExceptionPage();
-            }
-            else
-            {
-                app.UseHsts();
-            }
+            services.ConfigureServices(Configuration);
+
+            services.ConfigureDataServices(Configuration.GetConnectionString("DefaultConnection"));
+
+            services.AddOptions();
+
+            services.ConfigureSwaggerAndVersioning(Configuration);
+
+            services.ConfigureAuthentication(Configuration);
+
+            services.ConfigureCors();
+
+            services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_1).AddDataAnnotationsLocalization();
+
+            services.ConfigureApiModelState();
+        }
+
+        public void Configure(IApplicationBuilder app, IApiVersionDescriptionProvider provider)
+        {
+            app.UseHsts();
+
+            app.UseSwagger(provider);
+
+            app.UseApiResponseWrapperMiddleware();
+
+            app.UseAuthentication();
 
             app.UseHttpsRedirection();
+
             app.UseMvc();
         }
     }
