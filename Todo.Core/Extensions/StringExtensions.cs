@@ -29,7 +29,7 @@ namespace Todo.Core.Extensions
                 plainText = Decode(encodedText);
                 return true;
             }
-            catch (Exception ex)
+            catch (Exception)
             {
             }
 

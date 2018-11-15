@@ -1,4 +1,4 @@
-﻿namespace Todo.Core.Entities
+﻿namespace Todo.Domain.ViewModels
 {
     public class SignedUserData
     {

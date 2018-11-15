@@ -10,6 +10,9 @@ namespace Todo.Api.Middlewares
         {
             services.AddSingleton<IConnectionFactory>(s => new ConnectionFactory(connectionString));
             services.AddTransient<IUserRepository, UserService>();
+            services.AddTransient<ITaskPriorityRepository, TaskPriorityService>();
+            services.AddTransient<ITaskStatusRepository, TaskStatusService>();
+            services.AddTransient<ITaskRepository, TaskService>();
         }
     }
 }

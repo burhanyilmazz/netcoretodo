@@ -12,9 +12,9 @@ using System.Threading.Tasks;
 using Todo.Api.ActionFilters;
 using Todo.Api.Middlewares.Jwt;
 using Todo.Core.Entities;
-using Todo.Core.ViewModels.Membership;
 using Todo.DataAccess.CustomRepositories;
 using Todo.Domain;
+using Todo.Domain.ViewModels;
 
 namespace ModelCommunity.Api.V1.Controllers
 {

@@ -1,47 +1,104 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Diagnostics;
-using System.Linq;
-using System.Threading.Tasks;
+﻿using Flurl;
+using Flurl.Http;
 using Microsoft.AspNetCore.Mvc;
-using Todo.UI.Models;
+using Microsoft.Extensions.Options;
+using Newtonsoft.Json;
+using System.Collections.Generic;
+using System.Threading.Tasks;
+using Todo.Core.Entities;
+using Todo.Domain;
+using Todo.Domain.ViewModels;
+using Todo.UI.ActionFilters;
+using Todo.UI.ViewModels;
 
 namespace Todo.UI.Controllers
 {
     public class HomeController : Controller
     {
-        public IActionResult Index()
+        private readonly IOptions<ServiceEndpoint> _serviceEndpoint;
+        public HomeController(IOptions<ServiceEndpoint> serviceEndpoint)
         {
-            if (HttpContext.User.Identity == null || string.IsNullOrEmpty(HttpContext.User.Identity.Name))
+            _serviceEndpoint = serviceEndpoint;
+        }
+
+        [AuthenticationFilter]
+        public async Task<IActionResult> Index()
+        {
+            var signedUserCookie = HttpContext.Request.Cookies["AccessToken"];
+            var token = JsonConvert.DeserializeObject<TokenResponse>(signedUserCookie);
+            var serviceResult = await _serviceEndpoint.Value.HostName
+                                 .AppendPathSegment(_serviceEndpoint.Value.TaskEndpoint.GetPriorities)
+                                 .WithHeader("Authorization", "Bearer " + token.AccessToken)
+                                 .PostJsonAsync(new { })
+                                 .ReceiveJson<ServiceResult>();
+
+            if (serviceResult.MessageType == Core.Enums.EMessageType.Success)
             {
-                return RedirectToAction("Login", "Account");
+                serviceResult.Result = JsonConvert.DeserializeObject<List<TaskPriority>>(serviceResult.Result.ToString());
             }
-            return View();
+            return View(serviceResult);
         }
 
-        public IActionResult About()
+        [AuthenticationFilter]
+        public async Task<ServiceResult> AddTask([FromBody] AddTaskViewModel taskModel)
         {
-            ViewData["Message"] = "Your application description page.";
+            var signedUserCookie = HttpContext.Request.Cookies["AccessToken"];
+            var token = JsonConvert.DeserializeObject<TokenResponse>(signedUserCookie);
 
-            return View();
+            var serviceResult = await _serviceEndpoint.Value.HostName
+                                 .AppendPathSegment(_serviceEndpoint.Value.TaskEndpoint.AddTask)
+                                 .WithHeader("Authorization", "Bearer " + token.AccessToken)
+                                 .PostJsonAsync(taskModel)
+                                 .ReceiveJson<ServiceResult>();
+
+            if (serviceResult.MessageType == Core.Enums.EMessageType.Success)
+            {
+                serviceResult.Result = JsonConvert.DeserializeObject<TodoTask>(serviceResult.Result.ToString());
+            }
+            return serviceResult;
         }
 
-        public IActionResult Contact()
+        [AuthenticationFilter]
+        public async Task<ServiceResult> UpdateTask([FromBody] AddTaskViewModel taskModel)
         {
-            ViewData["Message"] = "Your contact page.";
+            var signedUserCookie = HttpContext.Request.Cookies["AccessToken"];
+            var token = JsonConvert.DeserializeObject<TokenResponse>(signedUserCookie);
 
-            return View();
+            var serviceResult = await _serviceEndpoint.Value.HostName
+                                 .AppendPathSegment(_serviceEndpoint.Value.TaskEndpoint.UpdateTask)
+                                 .WithHeader("Authorization", "Bearer " + token.AccessToken)
+                                 .PostJsonAsync(taskModel)
+                                 .ReceiveJson<ServiceResult>();
+
+            if (serviceResult.MessageType == Core.Enums.EMessageType.Success)
+            {
+                serviceResult.Result = JsonConvert.DeserializeObject<TodoTask>(serviceResult.Result.ToString());
+            }
+            return serviceResult;
         }
 
-        public IActionResult Privacy()
+        [HttpGet]
+        [AuthenticationFilter]
+        public async Task<IActionResult> GetTasks(int statusId)
         {
-            return View();
+            var signedUserCookie = HttpContext.Request.Cookies["AccessToken"];
+            var token = JsonConvert.DeserializeObject<TokenResponse>(signedUserCookie);
+
+            var serviceResult = await _serviceEndpoint.Value.HostName
+                                 .AppendPathSegment(_serviceEndpoint.Value.TaskEndpoint.GetTaskViewModel)
+                                 .WithHeader("Authorization", "Bearer " + token.AccessToken)
+                                 .PostJsonAsync(new { })
+                                 .ReceiveJson<ServiceResult>();
+
+            if (serviceResult.MessageType == Core.Enums.EMessageType.Success)
+            {
+                serviceResult.Result = JsonConvert.DeserializeObject<TaskViewModel>(serviceResult.Result.ToString());
+            }
+
+            return ViewComponent("Tasks", statusId);
+
         }
 
-        [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
-        public IActionResult Error()
-        {
-            return View(new ErrorViewModel { RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier });
-        }
+
     }
 }

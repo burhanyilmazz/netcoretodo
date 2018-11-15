@@ -7,7 +7,7 @@ using System.Security.Claims;
 using System.Security.Principal;
 using System.Threading.Tasks;
 using Todo.Core.Entities;
-using Todo.Core.ViewModels.Membership;
+using Todo.Domain.ViewModels;
 
 namespace ModelCommunity.Web.Middlewares
 {

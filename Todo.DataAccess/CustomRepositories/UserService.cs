@@ -4,9 +4,9 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Todo.Core.Entities;
-using Todo.Core.ViewModels.Membership;
 using Todo.DataAccess.Infrastructure;
 using Todo.Domain;
+using Todo.Domain.ViewModels;
 
 namespace Todo.DataAccess.CustomRepositories
 {

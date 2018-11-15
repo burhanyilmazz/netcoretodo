@@ -35,3 +35,16 @@ body {
         display: none;
     }
 }
+
+.txt-normal {
+    background-color: #DFF0D8;
+}
+.txt-danger {
+    background-color: #F2DEDE !important;
+}
+.txt-warning {
+    background-color: #FCF8E3;
+}
+.txt-info {
+    background-color: #D9EDF7;
+}

@@ -24,7 +24,7 @@ namespace Todo.Api.Middlewares.Jwt
 
         public DateTime IssuedAt => DateTime.UtcNow;
 
-        public TimeSpan ValidFor { get; set; } = TimeSpan.FromMinutes(1);
+        public TimeSpan ValidFor { get; set; } = TimeSpan.FromMinutes(120);
 
         public TimeSpan RefreshTokenValidFor { get; set; } = TimeSpan.FromDays(1);
 

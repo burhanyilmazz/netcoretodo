@@ -1,14 +1,11 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
+﻿using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Options;
 using Todo.Core.Entities;
-using Todo.Core.ViewModels.Membership;
 using Flurl;
 using Flurl.Http;
-using Newtonsoft.Json;
+using Todo.Domain.ViewModels;
+using Todo.UI.ActionFilters;
 
 namespace Todo.UI.Controllers
 {
@@ -20,6 +17,7 @@ namespace Todo.UI.Controllers
         {
             _serviceEndpoint = serviceEndpoint;
         }
+
         [HttpGet("Login")]
         public IActionResult Login()
         {
@@ -28,6 +26,14 @@ namespace Todo.UI.Controllers
                 return RedirectToAction("Index", "Home");
             }
             return View();
+        }
+
+        [HttpGet("Logout")]
+        [AuthenticationFilter]
+        public IActionResult Logout()
+        {
+            Response.Cookies.Delete("AccessToken");
+            return View("Login");
         }
 
         [HttpPost("Login")]

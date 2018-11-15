@@ -9,9 +9,17 @@ namespace Todo.Core.Entities
         public string HostName { get; set; }
         public AccountEndpoint AccountEndpoint { get; set; }
 
-       
+        public TaskEndpoint TaskEndpoint { get; set; }
+
     }
 
+    public class TaskEndpoint
+    {
+        public string GetTaskViewModel { get; set; }
+        public string GetPriorities { get; set; }
+        public string AddTask { get; set; }
+        public string UpdateTask { get; set; }
+    }
 
     public class AccountEndpoint
     {

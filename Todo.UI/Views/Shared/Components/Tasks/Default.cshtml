@@ -1,0 +1,62 @@
+﻿@using Todo.Core.Entities
+@using Todo.Domain.ViewModels
+@model ServiceResult
+@{
+    var taskViewModel = (TaskViewModel)Model.Result;
+    var selectedStatus = int.Parse(Model.Title);
+}
+
+<ul class="nav nav-pills" role="tablist" style="margin-bottom:10px;">
+    @foreach (var item in taskViewModel.TaskStatuses)
+    {
+        <li role="presentation" @(item.Id == selectedStatus ? "class=active" : "")><a href="#" class="aTaskStatus" data-status-id="@item.Id">@item.Name <span class="badge">@item.TaskCount</span></a></li>
+    }
+    <li role="presentation" id="liAllStatus" @(0 == selectedStatus ? "class=active" : "")><a href="#" data-status-id="0" class="aTaskStatus">All <span class="badge">@taskViewModel.TaskStatuses.Sum(x => x.TaskCount)</span></a></li>
+
+</ul>
+<table class="table" style="border-top:0;">
+    <tbody>
+        @if (taskViewModel.Tasks.Count == 0)
+        {
+            <tr class="success">
+                <td>
+                    No data to display.
+                </td>
+            </tr>
+        }
+        @foreach (var task in taskViewModel.Tasks)
+        {
+
+            string rowClass = "active";
+            switch (task.TaskPriorityId)
+            {
+                case 2:
+                    rowClass = "danger";
+                    break;
+                case 3:
+                    rowClass = "warning";
+                    break;
+                case 4:
+                    rowClass = "info";
+                    break;
+            }
+
+            <tr class="@rowClass">
+                <td>
+                    <div id="divTask_@task.Id" class="input-group">
+                        <span class="input-group-btn">
+                            <button class="btn btn-success btnUpdateTaskStatus" type="button" aria-label="Left Align" data-value="@task.Id" data-status-id="2"><span class="glyphicon glyphicon-ok" aria-hidden="true"></span></button>
+                        </span>
+                        <input type="text" id="txtName_@task.Id" class="form-control" placeholder="What needs to be done?" value="@task.Name" aria-label="...">
+
+                        <span class="input-group-btn">
+                            <button class="btn btn-primary btnUpdateTask" type="button" aria-label="Left Align" data-value="@task.Id"><span class="glyphicon glyphicon-floppy-saved" aria-hidden="true"></span></button>
+
+                            <button class="btn btn-danger btnUpdateTaskStatus" type="button" aria-label="Left Align" data-status-id="3" data-value="@task.Id"><span class="glyphicon glyphicon-trash" aria-hidden="true"></span></button>
+                        </span>
+                    </div>
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>

@@ -13,8 +13,14 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\..\Todo.Domain\Todo.Domain.csproj" />
     <ProjectReference Include="..\Todo.Core\Todo.Core.csproj" />
+    <ProjectReference Include="..\Todo.Domain\Todo.Domain.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Content Update="Views\Shared\Components\Tasks\Default.cshtml">
+      <Pack>$(IncludeRazorContentInPack)</Pack>
+    </Content>
   </ItemGroup>
 
 </Project>

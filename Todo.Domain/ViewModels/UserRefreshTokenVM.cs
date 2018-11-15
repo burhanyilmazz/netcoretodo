@@ -1,7 +1,7 @@
 ﻿using System;
 using System.ComponentModel.DataAnnotations;
 
-namespace Todo.Core.ViewModels.Membership
+namespace Todo.Domain.ViewModels
 {
     public class UserRefreshTokenVM
     {

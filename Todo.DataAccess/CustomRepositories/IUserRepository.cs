@@ -2,7 +2,7 @@
 using System.Threading.Tasks;
 using Todo.Domain;
 using Todo.Core.Entities;
-using Todo.Core.ViewModels.Membership;
+using Todo.Domain.ViewModels;
 
 namespace Todo.DataAccess.CustomRepositories
 {

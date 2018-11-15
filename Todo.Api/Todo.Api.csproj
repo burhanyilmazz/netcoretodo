@@ -21,9 +21,9 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\..\Todo.Domain\Todo.Domain.csproj" />
     <ProjectReference Include="..\Todo.Core\Todo.Core.csproj" />
     <ProjectReference Include="..\Todo.DataAccess\Todo.DataAccess.csproj" />
+    <ProjectReference Include="..\Todo.Domain\Todo.Domain.csproj" />
   </ItemGroup>
 
 </Project>
