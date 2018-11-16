@@ -13,6 +13,8 @@
 
 Uygulama katmanlı mimariye uygun tasarlanmış olup Rest tabanlı çalışmaktadır. ORM olarak **mini-ORM Dapper** kullanılmıştır. Uygulama http isteklerini api projesine göndermektedir.Authentication ve authorization işlemleri için **JSON Web Token** kullanılmıştır.
 
+![Visio](https://github.com/ismailkanat/netcoretodo/blob/master/Drawing.jpg)
+
 **Kullanıcı Bilgileri**
   - user1 - 1
   - user2 - 2
@@ -38,9 +40,7 @@ Uygulama katmanlı mimariye uygun tasarlanmış olup Rest tabanlı çalışmakta
         - Response tutarlılığını sağlamak için yazdığım bir middleware ile request’leri handle edip tek bir serviceResult dönüyorum. Böylelikle her türlü olumlu-olumsuz mesajlar ile birlikte istediğim objeyi döndürebiliyorum.
         -  UI katmanında .NET Core MVC kullanılmıştır. Web katmanının tek işi, gerek front-end tarafında gerekse back-end tarafında da .NET Core Api servisinden beslenmektir. 
 
-
-İsmail KANAT
-Software Developer
-www.ismailkanat.com
-0538 344 35 47
+![Api](https://github.com/ismailkanat/netcoretodo/blob/master/swagger.png)
+![Login](https://github.com/ismailkanat/netcoretodo/blob/master/login.png)
+![Tasks](https://github.com/ismailkanat/netcoretodo/blob/master/tasks.png)
 
