@@ -13,6 +13,13 @@
 
 Uygulama katmanlı mimariye uygun tasarlanmış olup Rest tabanlı çalışmaktadır. ORM olarak **mini-ORM Dapper** kullanılmıştır. Uygulama http isteklerini api projesine göndermektedir.Authentication ve authorization işlemleri için **JSON Web Token** kullanılmıştır.
 
+**Kullanıcı Bilgileri**
+  - user1 - 1
+  - user2 - 2
+  - user3 - 3
+  - user4 - 4
+  - user5 - 5
+
 **Kullanılan Yazılım Desenleri**
   - Singleton
   - Repository Pattern
