@@ -4,8 +4,8 @@ using Microsoft.Extensions.Options;
 using Todo.Core.Entities;
 using Flurl;
 using Flurl.Http;
-using Todo.Domain.ViewModels;
 using Todo.UI.ActionFilters;
+using Todo.Domain.ViewModels;
 
 namespace Todo.UI.Controllers
 {
@@ -37,7 +37,7 @@ namespace Todo.UI.Controllers
         }
 
         [HttpPost("Login")]
-        public async Task<IActionResult> Login(UserSignInWithFormVM user)
+        public async Task<IActionResult> Login(UserLoginViewModel user)
         {
             var loginResult = await _serviceEndpoint.Value.HostName
                .AppendPathSegment(_serviceEndpoint.Value.AccountEndpoint.SignInWithForm)

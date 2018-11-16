@@ -29,13 +29,22 @@ namespace ModelCommunity.Web.Middlewares
             var claimsIdentity = new ClaimsIdentity(new GenericIdentity(signedUserData.UserName, "Token"), new[]
                       {
                         new Claim("id", signedUserData.Id.ToString()),
-
                         new Claim("userName", string.IsNullOrEmpty(signedUserData.UserName) ? string.Empty : signedUserData.UserName),
-
                     });
 
             var signedUser = new GenericPrincipal(claimsIdentity, new string[] { });
             return signedUser;
+        }
+
+        public async Task<ServiceResult> GetSignedUserData(TokenResponse token)
+        {
+            var serviceResult = await _serviceEndpoint.Value.HostName
+                    .AppendPathSegment(_serviceEndpoint.Value.AccountEndpoint.SignedUserDataEndpoint)
+                    .WithHeader("Authorization", "Bearer " + token.AccessToken)
+                    .PostJsonAsync(new { })
+                    .ReceiveJson<ServiceResult>();
+
+            return serviceResult;
         }
 
         public async Task InvokeAsync(HttpContext context)
@@ -52,13 +61,7 @@ namespace ModelCommunity.Web.Middlewares
 
                 try
                 {
-                    var signedUserResult = await _serviceEndpoint.Value.HostName
-                      .AppendPathSegment(_serviceEndpoint.Value.AccountEndpoint.SignedUserDataEndpoint)
-                      .WithHeader("Authorization", "Bearer " + token.AccessToken)
-                      .PostJsonAsync(new { })
-                      .ReceiveJson<ServiceResult>();
-
-
+                    var signedUserResult = await GetSignedUserData(token);
 
                     context.User = BuildSignedUserData(signedUserResult);
                 }
@@ -71,7 +74,7 @@ namespace ModelCommunity.Web.Middlewares
 
                         var refreshTokenResult = await _serviceEndpoint.Value.HostName
                             .AppendPathSegment(_serviceEndpoint.Value.AccountEndpoint.RefreshToken)
-                            .PostJsonAsync(new UserRefreshTokenVM
+                            .PostJsonAsync(new RefreshTokenViewModel
                             {
                                 Token = token.RefreshToken
                             })
@@ -84,19 +87,14 @@ namespace ModelCommunity.Web.Middlewares
                         }
 
                         token = JsonConvert.DeserializeObject<TokenResponse>(refreshTokenResult.Result.ToString());
-                        
-                        var signedUserResult = await _serviceEndpoint.Value.HostName
-                            .AppendPathSegment(_serviceEndpoint.Value.AccountEndpoint.SignedUserDataEndpoint)
-                            .WithHeader("Authorization", "Bearer " + token.AccessToken)
-                            .PostJsonAsync(new { })
-                            .ReceiveJson<ServiceResult>();
+
+                        var signedUserResult = await GetSignedUserData(token);
 
                         if (signedUserResult.MessageType != Todo.Core.Enums.EMessageType.Success)
                         {
                             context.Response.Redirect("/Account/Login/");
                             return;
                         }
-
 
                         context.Response.Cookies.Append("AccessToken", refreshTokenResult.Result.ToString());
                         context.User = BuildSignedUserData(signedUserResult);

@@ -1,6 +1,6 @@
 ﻿@using Todo.Domain.ViewModels
 @using Todo.Core.Entities
-@model UserSignInWithFormVM
+@model UserLoginViewModel
 
 @{
     ViewData["Title"] = "Login";
@@ -8,53 +8,100 @@
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
-<h2>Login</h2>
-
-<div class="row">
-    <div class="panel panel-default">
-        <div class="panel-heading">
-            <h3 class="panel-title">Giriş</h3>
-        </div>
-        <div class="panel-body">
-            <div class="row">
-
-               
 
 
+<div class="row" style="margin-top:50px">
+    <div class="col-md-4 col-lg-offset-4">
+
+        <div class="panel panel-default">
+            <div class="panel-heading">
+                <h2 class="panel-title">Login</h2>
+            </div>
+            <div class="panel-body">
+                <div class="row">
 
 
-                <div class="col-md-4 col-lg-offset-4">
-                    <form class="content validationGroup" method="post" asp-controller="Account" asp-action="Login">
 
-                        @if (result != null && result.MessageType != Todo.Core.Enums.EMessageType.Success)
-                        {<div class="row">
-                                <div class="col col-12 col-xl-12 col-lg-12 col-md-12 col-sm-12">
-                                    <div class="alert alert-danger">
-                                        <strong>@result.Message</strong>
+
+
+
+                    <div class="col-md-12">
+                        <form class="content validationGroup" name="formLogin" method="post" asp-controller="Account" asp-action="Login">
+
+                            @if (result != null && result.MessageType != Todo.Core.Enums.EMessageType.Success)
+                            {<div class="row">
+                                    <div class="col col-12 col-xl-12 col-lg-12 col-md-12 col-sm-12">
+                                        <div class="alert alert-danger">
+                                            <strong>@result.Message</strong>
+                                        </div>
                                     </div>
                                 </div>
-                            </div>
-                        }
+                            }
 
-                         <div class="row" id="register">
-                            
-                                 <div class="form-group">
-                                     <label class="control-label">Kullanıcı Adı</label>
-                                     <input asp-for="Username" class="form-control required" type="text">
-                                 </div>
-                             
-                                 <div class="form-group ">
-                                     <label class="control-label" >Şifre </label>
-                                     <input asp-for="Password" class="form-control required" type="text">
-                                 </div>
+                       
+                                <div class="form-group">
+                                    <label class="control-label">Username</label>
+                                    <input asp-for="Username" class="form-control required" type="text">
+                                </div>
 
-                             <button id="btnLogin" type="submit" class="btn btn-primary btn-lg full-width">Giriş Yap</button>
+                                <div class="form-group ">
+                                    <label class="control-label">Password </label>
+                                    <input asp-for="Password" class="form-control required" type="text">
+                                </div>
 
-                         </div>
-                    </form>
+                                <button id="btnLogin" type="submit" class="btn btn-primary btn-lg full-width">Login</button>
+
+                        </form>
+                    </div>
                 </div>
             </div>
         </div>
     </div>
-
 </div>
+
+
+@section Scripts
+    {
+    <script type="text/javascript">
+        $(document).ready(function () {
+
+            $("form[name='formLogin']").validate({
+                // Specify validation rules
+                rules: {
+                    // The key name on the left side is the name attribute
+                    // of an input field. Validation rules are defined
+                    // on the right side
+                    firstname: "required",
+                    lastname: "required",
+                    email: {
+                        required: true,
+                        // Specify that email should be validated
+                        // by the built-in "email" rule
+                        email: true
+                    },
+                    password: {
+                        required: true,
+                        minlength: 5
+                    }
+                },
+                // Specify validation error messages
+                messages: {
+                    firstname: "Please enter your firstname",
+                    lastname: "Please enter your lastname",
+                    password: {
+                        required: "Please provide a password",
+                        minlength: "Your password must be at least 5 characters long"
+                    },
+                    email: "Please enter a valid email address"
+                },
+                // Make sure the form is submitted to the destination defined
+                // in the "action" attribute of the form when valid
+                submitHandler: function (form) {
+                    form.submit();
+                }
+            });
+
+        });
+
+    </script>
+}

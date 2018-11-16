@@ -1,12 +1,8 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.DependencyInjection;
 using Todo.Core.Entities;
-using System;
-using System.Collections.Generic;
 using System.Linq;
 using System.Net;
-using System.Threading.Tasks;
-
 
 namespace Todo.Api.Extensions
 {
@@ -40,9 +36,6 @@ namespace Todo.Api.Extensions
                 };
                 options.SuppressModelStateInvalidFilter = true;
             });
-
-        }
-
-        
+        }        
     }
 }

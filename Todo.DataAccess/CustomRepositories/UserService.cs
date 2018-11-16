@@ -81,33 +81,33 @@ namespace Todo.DataAccess.CustomRepositories
             return await _connectionFactory.GetConnection.UpdateAsync(entity);
         }
 
-        public async Task<ServiceResult> SignInWithFormAsync(UserSignInWithFormVM userSignInWithFormVm)
+        public async Task<ServiceResult> SignInWithFormAsync(UserLoginViewModel userLoginViewModel)
         {
             var serviceResult = new ServiceResult();
 
             var userList = await _connectionFactory.GetConnection.FindAsync<User>(x => x
                                                 .Where($"{nameof(User.Username):C}=@Username")
-                                                .WithParameters(new { Username = userSignInWithFormVm.Username }));
+                                                .WithParameters(new { userLoginViewModel.Username }));
 
             if (!userList.Any())
             {
                 serviceResult.MessageType = Core.Enums.EMessageType.Error;
-                serviceResult.Message = "Böyle bir kullanıcı bulunamadı.";
+                serviceResult.Message = "User not found.";
                 return serviceResult;
             }
 
             var user = userList.FirstOrDefault();
             
-            if (user.Password != userSignInWithFormVm.Password)
+            if (user.Password != userLoginViewModel.Password)
             {
                 serviceResult.MessageType = Core.Enums.EMessageType.Error;
-                serviceResult.Message = "Giriş bilgileri hatalı.";
+                serviceResult.Message = "Login information is incorrect.";
                 return serviceResult;
             }
                        
             serviceResult.Result = user;
             serviceResult.MessageType = Core.Enums.EMessageType.Success;
-            serviceResult.Message = "Giriş Başarılı";
+            serviceResult.Message = "Login success";
 
             return serviceResult;
         }
@@ -127,7 +127,7 @@ namespace Todo.DataAccess.CustomRepositories
             };
         }
 
-        public async Task<UserRefreshToken> GetUserRefreshTokensAsync(UserRefreshTokenVM refreshTokenVm)
+        public async Task<UserRefreshToken> GetUserRefreshTokensAsync(RefreshTokenViewModel refreshTokenVm)
         {
             var refreshToken = await _connectionFactory.GetConnection.FindAsync<UserRefreshToken>(x => x
                      .Include<User>(join => join

@@ -8,7 +8,6 @@ namespace Todo.Core.Entities
     {
         public string HostName { get; set; }
         public AccountEndpoint AccountEndpoint { get; set; }
-
         public TaskEndpoint TaskEndpoint { get; set; }
 
     }

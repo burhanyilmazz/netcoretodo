@@ -134,7 +134,6 @@ namespace ModelCommunity.Api.V1.Controllers
                 Message = status ? "Task updated." : "Something went wrong.",
                 Result = todoTask
             };
-
             return ServiceResult;
         }
 

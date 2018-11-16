@@ -11,8 +11,7 @@ namespace Todo.DataAccess.Infrastructure
         public SqlConnection Connection;
         public ConnectionFactory(string connectionString)
         {
-            _connectionString = connectionString;
-            
+            _connectionString = connectionString;            
         }
 
         public IDbConnection GetConnection
@@ -23,8 +22,7 @@ namespace Todo.DataAccess.Infrastructure
                 return new SqlConnection(_connectionString);
             }
         }
-
-
+        
         #region IDisposable Support
         private bool disposedValue = false; 
 

@@ -1,7 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 
 namespace Todo.Core.Entities
 {
@@ -13,5 +10,4 @@ namespace Todo.Core.Entities
         public string RefreshToken { get; set; }
         public DateTime TokenExpirationUtc { get; set; }
     }
-
 }

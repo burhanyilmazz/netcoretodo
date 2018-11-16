@@ -8,12 +8,12 @@ namespace Todo.DataAccess.CustomRepositories
 {
     public interface IUserRepository : IGenericRepository<User>
     {
-        Task<ServiceResult> SignInWithFormAsync(UserSignInWithFormVM userSignInWithFormVm);
+        Task<ServiceResult> SignInWithFormAsync(UserLoginViewModel userLoginViewModel);
         
         void RemoveOldRefreshTokensAsync(int userId);
 
         Task<ServiceResult> AddRefreshTokenAsync(UserRefreshToken userRefreshToken);
 
-        Task<UserRefreshToken> GetUserRefreshTokensAsync(UserRefreshTokenVM refreshTokenVm);       
+        Task<UserRefreshToken> GetUserRefreshTokensAsync(RefreshTokenViewModel refreshTokenVm);       
     }
 }

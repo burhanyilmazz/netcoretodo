@@ -3,7 +3,7 @@ using System.ComponentModel.DataAnnotations;
 
 namespace Todo.Domain.ViewModels
 {
-    public class UserRefreshTokenVM
+    public class RefreshTokenViewModel
     {
         [StringLength(254)]
         [Required(ErrorMessage = "Required")]

@@ -2,7 +2,7 @@
 
 namespace Todo.Domain.ViewModels
 {
-    public class UserSignInWithFormVM
+    public class UserLoginViewModel
     {
         [StringLength(254)]
         [Required(ErrorMessage = "Required")]

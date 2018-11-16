@@ -38,7 +38,7 @@ namespace ModelCommunity.Api.Extensions
                         options.SwaggerDoc(description.GroupName, CreateInfoForApiVersion(description, configuration));
                     }
                     options.OperationFilter<SwaggerDefaultValues>();
-                    options.IncludeXmlComments(XmlCommentsFilePath);
+                    //options.IncludeXmlComments(XmlCommentsFilePath);
                 });
         }
 

@@ -3,8 +3,10 @@
 @model ServiceResult
 @{
     var taskPriorities = (List<TaskPriority>)Model.Result;
-    ViewData["Title"] = "Home Page";
 }
+
+
+
 <div class="row">
     <div class="col-md-6 col-md-offset-3">
         <form action="#" class="">
@@ -27,7 +29,7 @@
                                     <input type="text" id="txtName" class="form-control" placeholder="What needs to be done?" aria-label="...">
 
                                     <span class="input-group-btn">
-                                        <button class="btn btn-default" id="btnAddTask" type="button" aria-label="Left Align"><span class="glyphicon glyphicon-plus" aria-hidden="true"></span></button>
+                                        <a class="btn btn-default" id="btnAddTask" aria-label="Left Align"><span class="glyphicon glyphicon-plus" aria-hidden="true"></span></a>
                                     </span>
 
                                 </div>
@@ -144,9 +146,6 @@
                     dataType: "json",
                     async: async,
                     url: callUrl,
-                    headers: {
-                        'Accept-Language': $("#hdDefaultLanguageId").val()
-                    },
                     success: fnSuccess,
                     error: fnError
                 });

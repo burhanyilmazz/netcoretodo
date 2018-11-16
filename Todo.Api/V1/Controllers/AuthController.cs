@@ -43,9 +43,9 @@ namespace ModelCommunity.Api.V1.Controllers
         [HttpPost("SignInWithForm")]
         [CheckModelValidation]
         [AllowAnonymous]
-        public async Task<ServiceResult> SignInWithForm([FromBody] UserSignInWithFormVM userSignInWithFormVM)
+        public async Task<ServiceResult> SignInWithForm([FromBody] UserLoginViewModel userLoginViewModel)
         {
-            var serviceResult = await _userService.SignInWithFormAsync(userSignInWithFormVM);
+            var serviceResult = await _userService.SignInWithFormAsync(userLoginViewModel);
 
             if (serviceResult.MessageType != Todo.Core.Enums.EMessageType.Success)
             {
@@ -75,7 +75,7 @@ namespace ModelCommunity.Api.V1.Controllers
         [AllowAnonymous]
         [CheckModelValidation]
         [HttpPost("RefreshToken")]
-        public async Task<ServiceResult> RefreshToken([FromBody] UserRefreshTokenVM refreshToken)
+        public async Task<ServiceResult> RefreshToken([FromBody] RefreshTokenViewModel refreshToken)
         {
             var serviceResult = new ServiceResult();
             var refreshTokenFromDatabase = await _userService.GetUserRefreshTokensAsync(refreshToken);

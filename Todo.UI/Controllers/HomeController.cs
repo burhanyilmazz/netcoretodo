@@ -36,6 +36,7 @@ namespace Todo.UI.Controllers
             {
                 serviceResult.Result = JsonConvert.DeserializeObject<List<TaskPriority>>(serviceResult.Result.ToString());
             }
+            ViewData["Title"] = "Welcome " + HttpContext.User.Identity.Name + " - Todo.UI";
             return View(serviceResult);
         }
 

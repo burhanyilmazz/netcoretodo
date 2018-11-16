@@ -2,10 +2,8 @@
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using Todo.DataAccess.Infrastructure;
-using Todo.Domain;
 using TaskStatus = Todo.Domain.TaskStatus;
 using Dapper.FastCrud;
-using System.Linq;
 
 namespace Todo.DataAccess.CustomRepositories
 {
